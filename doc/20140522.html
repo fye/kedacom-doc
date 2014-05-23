@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>消息推送接口说明</title>
+<link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
+<script type="text/javascript" src="https://stackedit.io/libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body><div class="container"><h1 id="welcome">消息推送服务接口       </h1>
+
+<p><div class="toc">
+<ul>
+<li><a href="#welcome">消息推送服务接口       </a><ul>
+<li><a href="#第三方调用消息推送">第三方调用消息推送</a><ul>
+<li><ul>
+<li><a href="#需求分析"> 需求分析</a></li>
+<li><a href="#接口地址"> 接口地址</a></li>
+<li><a href="#接口请求参数"> 接口请求参数</a></li>
+<li><a href="#接口返回参数"> 接口返回参数</a></li>
+<li><a href="#代码示例"> 代码示例</a><ul>
+<li><a href="#java示例">Java示例</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#警务消息推送">警务消息推送</a><ul>
+<li><ul>
+<li><a href="#需求分析-1"> 需求分析</a></li>
+<li><a href="#接口地址-1"> 接口地址</a></li>
+<li><a href="#接口请求参数-1"> 接口请求参数</a></li>
+<li><a href="#接口返回参数-1"> 接口返回参数</a></li>
+<li><a href="#代码示例-1"> 代码示例</a><ul>
+<li><a href="#java示例-1">Java示例</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#策略配置推送">策略配置推送</a><ul>
+<li><ul>
+<li><a href="#需求分析-2"> 需求分析</a></li>
+<li><a href="#接口地址-2"> 接口地址</a></li>
+<li><a href="#接口请求参数-2"> 接口请求参数</a></li>
+<li><a href="#接口返回参数-2"> 接口返回参数</a></li>
+<li><a href="#代码示例-2"> 代码示例</a><ul>
+<li><a href="#java示例-2">Java示例</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#附录说明">附录说明</a><ul>
+<li><a href="#http接口请求调用错误码">HTTP接口请求调用错误码</a></li>
+<li><a href="#api-接口返回错误码">API 接口返回错误码</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+
+<p>消息推送服务主要提供三个接口功能：</p>
+
+<ul>
+<li>第三方调用消息推送</li>
+<li>警务消息推送</li>
+<li>策略配置推送</li>
+</ul>
+
+<hr>
+
+
+
+<h2 id="第三方调用消息推送">第三方调用消息推送</h2>
+
+<p>第三方业务系统在他们自己的业务中可以调用我们提供的消息推送开放接口给他们相关的用户推送信息。</p>
+
+
+
+<h4 id="需求分析"><i class="icon-file"></i> 需求分析</h4>
+
+<ul>
+<li>指定向某个用户推送信息</li>
+<li>指定向某个组织机构下的用户推送信息</li>
+<li>推送消息或者通知</li>
+</ul>
+
+<hr>
+
+
+
+<h4 id="接口地址"><i class="icon-folder-open"></i> 接口地址</h4>
+
+<table>
+<thead>
+<tr>
+  <th>说明</th>
+  <th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>地址</td>
+  <td><a href="http://ip:port/psp/push/msg">http://ip:port/psp/push/msg</a></td>
+</tr>
+<tr>
+  <td>请求类型</td>
+  <td>post</td>
+</tr>
+<tr>
+  <td>参数格式</td>
+  <td>json</td>
+</tr>
+<tr>
+  <td>参数位置</td>
+  <td>Body</td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="接口请求参数"><i class="icon-pencil"></i> 接口请求参数</h4>
+
+<blockquote>
+  <p><strong>说明:</strong></p>
+  
+  <ul>
+  <li>每个第三方调用接口时需要带上<strong>项目标识</strong>、<strong>权限秘钥</strong>、<strong>时间戳</strong></li>
+  <li>这三个固定参数放到请求的 Header 中</li>
+  <li>这部分内容将移到开放服务接口总章节中统一说明（包括参数名称等）</li>
+  </ul>
+</blockquote>
+
+<p>参数详细说明</p>
+
+
+
+<pre class="prettyprint prettyprinted" style=""><code><span class="pun">{</span><span class="pln">
+</span><span class="str">"type"</span><span class="pun">:</span><span class="str">"xx"</span><span class="pun">,</span><span class="pln">            </span><span class="com">// 必填 消息发送类型,其值为unicast,groupcast </span><span class="pln">
+                        </span><span class="com">// unicast-单播, </span><span class="pln">
+                        </span><span class="com">// groupcast-组播, </span><span class="pln">
+</span><span class="str">"device_tokens"</span><span class="pun">:</span><span class="str">"xx"</span><span class="pun">,</span><span class="pln">   </span><span class="com">// 可选 设备唯一表示 </span><span class="pln">
+                        </span><span class="com">// 当type=unicast时,必填, 表示指定的单个设备 </span><span class="pln">
+</span><span class="str">"payload"</span><span class="pun">:</span><span class="pln">              </span><span class="com">// 必填 消息内容(Android最大为1024B, iOS为256B), 包含参数说明如下(JSON格式): </span><span class="pln">
+    </span><span class="pun">{</span><span class="pln"> 
+    </span><span class="com">// Android </span><span class="pln">
+    </span><span class="str">"display_type"</span><span class="pun">:</span><span class="str">"xx"</span><span class="pun">,</span><span class="pln">    </span><span class="com">// 必填 消息类型，值为notification或者message </span><span class="pln">
+                            </span><span class="com">// notification-通知, message-消息. </span><span class="pln">
+    </span><span class="str">"body"</span><span class="pun">:</span><span class="pln">                 </span><span class="com">// 必填 消息体。 </span><span class="pln">
+                            </span><span class="com">// display_type=message时,body的内容只需填写custom字段;                                                   </span><span class="pln">
+                            </span><span class="com">//display_type=notification时, body可以包含如下参数: </span><span class="pln">
+        </span><span class="pun">{</span><span class="pln"> 
+        </span><span class="com">// 通知展现内容: </span><span class="pln">
+        </span><span class="str">"title"</span><span class="pun">:</span><span class="str">"xx"</span><span class="pun">,</span><span class="pln">   </span><span class="com">// 必填 通知标题 </span><span class="pln">
+                        </span><span class="com">// 自定义通知图标: </span><span class="pln">
+        </span><span class="str">"custom"</span><span class="pun">:</span><span class="str">"xx"</span><span class="pln">   </span><span class="com">// 可选display_type=message</span><span class="pln">
+                        </span><span class="com">// 用户自定义内容, 可以为字符串或者JSON格式。 </span><span class="pln">
+        </span><span class="pun">},</span><span class="pln"> 
+        </span><span class="str">"production_mode"</span><span class="pun">:</span><span class="str">"true/false"</span><span class="pun">,</span><span class="pln"> </span><span class="com">// 可选 正式\测试模式。 默认为"true"。 测试模式下只对固定的几个设备发送</span><span class="pln">
+        </span><span class="str">"description"</span><span class="pun">:</span><span class="str">"xx"</span><span class="pun">,</span><span class="pln"> </span><span class="com">// 可选 发送消息描述，建议填写。      </span><span class="pln">
+        </span><span class="str">"tag"</span><span class="pun">:</span><span class="str">"xx"</span><span class="pln">          </span><span class="com">// 可选 开发者自定义消息标识ID, 开发者可以为同一批发送的消息提供同一个 </span><span class="pln">
+                            </span><span class="com">// Tag便于后期合并统计数据。</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></code></pre>
+
+
+
+<h4 id="接口返回参数"><i class="icon-pencil"></i> 接口返回参数</h4>
+
+
+
+<pre class="prettyprint prettyprinted" style=""><code><span class="pln">
+</span><span class="pun">{</span><span class="pln"> 
+</span><span class="str">"ret"</span><span class="pun">:</span><span class="str">"SUCCESS/FAIL"</span><span class="pun">,</span><span class="pln">   </span><span class="com">// 返回结果，"SUCCESS"或者"FAIL"</span><span class="pln">
+</span><span class="str">"data"</span><span class="pun">:</span><span class="pln"> 
+    </span><span class="pun">{</span><span class="pln"> 
+    </span><span class="com">// 当"ret"为"SUCCESS"时,包含如下参数: </span><span class="pln">
+    </span><span class="str">"task_id"</span><span class="pun">:</span><span class="str">"xx"</span><span class="pun">,</span><span class="pln">     </span><span class="com">// 任务请求编号，通过这个编号可以查到这次调用的详细信息。  </span><span class="pln">
+    </span><span class="com">// 当"ret"为"FAIL"时,包含如下参数: </span><span class="pln">
+    </span><span class="str">"error_code"</span><span class="pun">:</span><span class="pln">xx     </span><span class="com">// 错误代码编号，可以在错误代码列表中查询详细错误原因</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+</span></code></pre>
+
+
+
+<h4 id="代码示例"><i class="icon-hdd"></i> 代码示例</h4>
+
+
+
+<h5 id="java示例">Java示例</h5>
+
+
+
+<pre class="prettyprint prettyprinted" style=""><code><span class="kwd">import</span><span class="pln"> org</span><span class="pun">.</span><span class="pln">apache</span><span class="pun">.</span><span class="pln">commons</span><span class="pun">.</span><span class="pln">codec</span><span class="pun">.</span><span class="pln">digest</span><span class="pun">.</span><span class="typ">DigestUtils</span><span class="pun">;</span><span class="pln"> 
+</span><span class="kwd">class</span><span class="pln"> md </span><span class="pun">{</span><span class="pln"> 
+    </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> main</span><span class="pun">(</span><span class="typ">String</span><span class="pln"> args</span><span class="pun">[])</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> 
+        </span><span class="typ">String</span><span class="pln"> appkey </span><span class="pun">=</span><span class="pln"> </span><span class="str">"50e26c315270156df0000031"</span><span class="pun">;</span><span class="pln"> 
+        </span><span class="typ">String</span><span class="pln"> appMasterSecret </span><span class="pun">=</span><span class="pln"> </span><span class="str">"b3a09842d2c86177aa8268ee64f14f7e"</span><span class="pun">;</span><span class="pln"> 
+        </span><span class="typ">String</span><span class="pln"> timestamp </span><span class="pun">=</span><span class="pln"> </span><span class="str">"1385321933302"</span><span class="pun">;</span><span class="pln"> 
+        </span><span class="com">// do remember lowercase appkey &amp; app_master_secret </span><span class="pln">
+        </span><span class="typ">String</span><span class="pln"> validationToken </span><span class="pun">=</span><span class="pln"> </span><span class="typ">DigestUtils</span><span class="pun">.</span><span class="pln">md5Hex</span><span class="pun">(</span><span class="pln">appkey</span><span class="pun">.</span><span class="pln">toLowerCase </span><span class="pun">+</span><span class="pln"> appMasterSecret</span><span class="pun">.</span><span class="pln">toLowerCase </span><span class="pun">+</span><span class="pln"> timestamp</span><span class="pun">);</span><span class="pln"> 
+    </span><span class="pun">}</span><span class="pln"> 
+</span><span class="pun">}</span></code></pre>
+
+<blockquote>
+  <p><strong>Note:</strong> DigestUtils.class 在 <em>*</em>.jar 包中，建议版本号：1.8+</p>
+</blockquote>
+
+<hr>
+
+
+
+<h2 id="警务消息推送">警务消息推送</h2>
+
+<p>移动警务管理员在移动基础平台上进行一些业务操作时，需要给相关的移动警员的设备推送信息.</p>
+
+
+
+<h4 id="需求分析-1"><i class="icon-file"></i> 需求分析</h4>
+
+<ul>
+<li>指定向某个用户推送信息</li>
+<li>指定向某个组织机构下的用户推送信息</li>
+<li>推送消息或者通知</li>
+</ul>
+
+<hr>
+
+
+
+<h4 id="接口地址-1"><i class="icon-folder-open"></i> 接口地址</h4>
+
+<table>
+<thead>
+<tr>
+  <th>说明</th>
+  <th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>地址</td>
+  <td><a href="http://ip:port/psp/push/msg">http://ip:port/psp/push/msg</a></td>
+</tr>
+<tr>
+  <td>请求类型</td>
+  <td>post</td>
+</tr>
+<tr>
+  <td>参数格式</td>
+  <td>json</td>
+</tr>
+<tr>
+  <td>参数位置</td>
+  <td>Body</td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="接口请求参数-1"><i class="icon-pencil"></i> 接口请求参数</h4>
+
+<blockquote>
+  <p><strong>说明:</strong></p>
+  
+  <ul>
+  <li>每个第三方调用接口时需要带上<strong>项目标识</strong>、<strong>权限秘钥</strong>、<strong>时间戳</strong></li>
+  <li>这三个固定参数放到请求的 Header 中</li>
+  <li>这部分内容将移到开放服务接口总章节中统一说明（包括参数名称等）</li>
+  </ul>
+</blockquote>
+
+<p>参数详细说明</p>
+
+
+
+<pre class="prettyprint prettyprinted" style=""><code><span class="pun">{</span><span class="pln">
+</span><span class="str">"type"</span><span class="pun">:</span><span class="str">"xx"</span><span class="pun">,</span><span class="pln">            </span><span class="com">// 必填 消息发送类型,其值为unicast,groupcast </span><span class="pln">
+                        </span><span class="com">// unicast-单播, </span><span class="pln">
+                        </span><span class="com">// groupcast-组播, </span><span class="pln">
+</span><span class="str">"device_tokens"</span><span class="pun">:</span><span class="str">"xx"</span><span class="pun">,</span><span class="pln">   </span><span class="com">// 可选 设备唯一表示 </span><span class="pln">
+                        </span><span class="com">// 当type=unicast时,必填, 表示指定的单个设备 </span><span class="pln">
+</span><span class="str">"payload"</span><span class="pun">:</span><span class="pln">              </span><span class="com">// 必填 消息内容(Android最大为1024B, iOS为256B), 包含参数说明如下(JSON格式): </span><span class="pln">
+    </span><span class="pun">{</span><span class="pln"> 
+    </span><span class="com">// Android </span><span class="pln">
+    </span><span class="str">"display_type"</span><span class="pun">:</span><span class="str">"xx"</span><span class="pun">,</span><span class="pln">    </span><span class="com">// 必填 消息类型，值为notification或者message </span><span class="pln">
+                            </span><span class="com">// notification-通知, message-消息. </span><span class="pln">
+    </span><span class="str">"body"</span><span class="pun">:</span><span class="pln">                 </span><span class="com">// 必填 消息体。 </span><span class="pln">
+                            </span><span class="com">// display_type=message时,body的内容只需填写custom字段;                                                   </span><span class="pln">
+                            </span><span class="com">//display_type=notification时, body可以包含如下参数: </span><span class="pln">
+        </span><span class="pun">{</span><span class="pln"> 
+        </span><span class="com">// 通知展现内容: </span><span class="pln">
+        </span><span class="str">"title"</span><span class="pun">:</span><span class="str">"xx"</span><span class="pun">,</span><span class="pln">   </span><span class="com">// 必填 通知标题 </span><span class="pln">
+                        </span><span class="com">// 自定义通知图标: </span><span class="pln">
+        </span><span class="str">"custom"</span><span class="pun">:</span><span class="str">"xx"</span><span class="pln">   </span><span class="com">// 可选display_type=message</span><span class="pln">
+                        </span><span class="com">// 用户自定义内容, 可以为字符串或者JSON格式。 </span><span class="pln">
+        </span><span class="pun">},</span><span class="pln"> 
+        </span><span class="str">"production_mode"</span><span class="pun">:</span><span class="str">"true/false"</span><span class="pun">,</span><span class="pln"> </span><span class="com">// 可选 正式\测试模式。 默认为"true"。 测试模式下只对固定的几个设备发送</span><span class="pln">
+        </span><span class="str">"description"</span><span class="pun">:</span><span class="str">"xx"</span><span class="pun">,</span><span class="pln"> </span><span class="com">// 可选 发送消息描述，建议填写。      </span><span class="pln">
+        </span><span class="str">"tag"</span><span class="pun">:</span><span class="str">"xx"</span><span class="pln">          </span><span class="com">// 可选 开发者自定义消息标签 </span><span class="pln">
+                            </span><span class="com">// Tag便于后期合并统计数据。</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></code></pre>
+
+
+
+<h4 id="接口返回参数-1"><i class="icon-pencil"></i> 接口返回参数</h4>
+
+
+
+<pre class="prettyprint prettyprinted" style=""><code><span class="pln">
+</span><span class="pun">{</span><span class="pln"> 
+</span><span class="str">"ret"</span><span class="pun">:</span><span class="str">"SUCCESS/FAIL"</span><span class="pun">,</span><span class="pln">   </span><span class="com">// 返回结果，"SUCCESS"或者"FAIL"</span><span class="pln">
+</span><span class="str">"data"</span><span class="pun">:</span><span class="pln"> 
+    </span><span class="pun">{</span><span class="pln"> 
+    </span><span class="com">// 当"ret"为"SUCCESS"时,包含如下参数: </span><span class="pln">
+    </span><span class="str">"task_id"</span><span class="pun">:</span><span class="str">"xx"</span><span class="pun">,</span><span class="pln">     </span><span class="com">// 任务请求编号，通过这个编号可以查到这次调用的详细信息。  </span><span class="pln">
+    </span><span class="com">// 当"ret"为"FAIL"时,包含如下参数: </span><span class="pln">
+    </span><span class="str">"error_code"</span><span class="pun">:</span><span class="pln">xx     </span><span class="com">// 错误代码编号，可以在错误代码列表中查询详细错误原因</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+</span></code></pre>
+
+
+
+<h4 id="代码示例-1"><i class="icon-hdd"></i> 代码示例</h4>
+
+
+
+<h5 id="java示例-1">Java示例</h5>
+
+
+
+<pre class="prettyprint prettyprinted" style=""><code><span class="kwd">import</span><span class="pln"> org</span><span class="pun">.</span><span class="pln">apache</span><span class="pun">.</span><span class="pln">commons</span><span class="pun">.</span><span class="pln">codec</span><span class="pun">.</span><span class="pln">digest</span><span class="pun">.</span><span class="typ">DigestUtils</span><span class="pun">;</span><span class="pln"> 
+</span><span class="kwd">class</span><span class="pln"> md </span><span class="pun">{</span><span class="pln"> 
+    </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> main</span><span class="pun">(</span><span class="typ">String</span><span class="pln"> args</span><span class="pun">[])</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> 
+        </span><span class="typ">String</span><span class="pln"> appkey </span><span class="pun">=</span><span class="pln"> </span><span class="str">"50e26c315270156df0000031"</span><span class="pun">;</span><span class="pln"> 
+        </span><span class="typ">String</span><span class="pln"> appMasterSecret </span><span class="pun">=</span><span class="pln"> </span><span class="str">"b3a09842d2c86177aa8268ee64f14f7e"</span><span class="pun">;</span><span class="pln"> 
+        </span><span class="typ">String</span><span class="pln"> timestamp </span><span class="pun">=</span><span class="pln"> </span><span class="str">"1385321933302"</span><span class="pun">;</span><span class="pln"> 
+        </span><span class="com">// do remember lowercase appkey &amp; app_master_secret </span><span class="pln">
+        </span><span class="typ">String</span><span class="pln"> validationToken </span><span class="pun">=</span><span class="pln"> </span><span class="typ">DigestUtils</span><span class="pun">.</span><span class="pln">md5Hex</span><span class="pun">(</span><span class="pln">appkey</span><span class="pun">.</span><span class="pln">toLowerCase </span><span class="pun">+</span><span class="pln"> appMasterSecret</span><span class="pun">.</span><span class="pln">toLowerCase </span><span class="pun">+</span><span class="pln"> timestamp</span><span class="pun">);</span><span class="pln"> 
+    </span><span class="pun">}</span><span class="pln"> 
+</span><span class="pun">}</span></code></pre>
+
+<blockquote>
+  <p><strong>Note:</strong> DigestUtils.class 在 <em>*</em>.jar 包中，建议版本号：1.8+</p>
+</blockquote>
+
+<hr>
+
+
+
+<h2 id="策略配置推送">策略配置推送</h2>
+
+<p>移动警务管理员在移动基础平台上经常会根据业务需要将某些业务的配置或者策略信息推送给移动终端，移动终端根据这些新的策略配置信息调整其业务进程。</p>
+
+
+
+<h4 id="需求分析-2"><i class="icon-file"></i> 需求分析</h4>
+
+<ul>
+<li>指定向某个用户推送策略配置</li>
+<li>指定向某个组织机构下的用户推送策略配置</li>
+</ul>
+
+<hr>
+
+
+
+<h4 id="接口地址-2"><i class="icon-folder-open"></i> 接口地址</h4>
+
+<table>
+<thead>
+<tr>
+  <th>说明</th>
+  <th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>地址</td>
+  <td><a href="http://ip:port/psp/push/config">http://ip:port/psp/push/config</a></td>
+</tr>
+<tr>
+  <td>请求类型</td>
+  <td>post</td>
+</tr>
+<tr>
+  <td>参数格式</td>
+  <td>json</td>
+</tr>
+<tr>
+  <td>参数位置</td>
+  <td>body</td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="接口请求参数-2"><i class="icon-pencil"></i> 接口请求参数</h4>
+
+<blockquote>
+  <p><strong>说明:</strong></p>
+  
+  <ul>
+  <li>每个第三方调用接口时需要带上<strong>项目标识</strong>、<strong>权限秘钥</strong>、<strong>时间戳</strong></li>
+  <li>这三个固定参数放到请求的 Header 中</li>
+  <li>这部分内容将移到开放服务接口总章节中统一说明（包括参数名称等）</li>
+  </ul>
+</blockquote>
+
+<p>参数详细说明</p>
+
+
+
+<pre class="prettyprint prettyprinted" style=""><code><span class="pun">{</span><span class="pln">
+</span><span class="str">"type"</span><span class="pun">:</span><span class="str">"xx"</span><span class="pun">,</span><span class="pln">            </span><span class="com">// 必填 消息发送类型,其值为unicast,groupcast </span><span class="pln">
+                        </span><span class="com">// unicast-单播, </span><span class="pln">
+                        </span><span class="com">// groupcast-组播, </span><span class="pln">
+</span><span class="str">"device_tokens"</span><span class="pun">:</span><span class="str">"xx"</span><span class="pun">,</span><span class="pln">   </span><span class="com">// 可选 设备唯一表示 </span><span class="pln">
+                        </span><span class="com">// 当type=unicast时,必填, 表示指定的单个设备 </span><span class="pln">
+</span><span class="str">"payload"</span><span class="pun">:</span><span class="pln">              </span><span class="com">// 必填 消息内容(Android最大为1024B, iOS为256B), 包含参数说明如下(JSON格式): </span><span class="pln">
+    </span><span class="pun">{</span><span class="pln"> 
+    </span><span class="str">"body"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"for example:cache=2&amp;submit=10"</span><span class="pun">,</span><span class="pln">    </span><span class="com">// 必填 配置信息。 </span><span class="pln">
+    </span><span class="str">"production_mode"</span><span class="pun">:</span><span class="str">"true/false"</span><span class="pun">,</span><span class="pln"> </span><span class="com">// 可选 正式\测试模式。 默认为"true"。 测试模式下只对固定的几个设备发送</span><span class="pln">
+    </span><span class="str">"description"</span><span class="pun">:</span><span class="str">"xx"</span><span class="pun">,</span><span class="pln"> </span><span class="com">// 可选 发送消息描述，建议填写。      </span><span class="pln">
+    </span><span class="str">"tag"</span><span class="pun">:</span><span class="str">"xx"</span><span class="pln">          </span><span class="com">// 可选 开发者自定义策略标签 </span><span class="pln">
+                        </span><span class="com">// Tag便于后期合并统计数据。</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></code></pre>
+
+
+
+<h4 id="接口返回参数-2"><i class="icon-pencil"></i> 接口返回参数</h4>
+
+
+
+<pre class="prettyprint prettyprinted" style=""><code><span class="pln">
+</span><span class="pun">{</span><span class="pln"> 
+</span><span class="str">"ret"</span><span class="pun">:</span><span class="str">"SUCCESS/FAIL"</span><span class="pun">,</span><span class="pln">   </span><span class="com">// 返回结果，"SUCCESS"或者"FAIL"</span><span class="pln">
+</span><span class="str">"data"</span><span class="pun">:</span><span class="pln"> 
+    </span><span class="pun">{</span><span class="pln"> 
+    </span><span class="com">// 当"ret"为"SUCCESS"时,包含如下参数: </span><span class="pln">
+    </span><span class="str">"task_id"</span><span class="pun">:</span><span class="str">"xx"</span><span class="pun">,</span><span class="pln">     </span><span class="com">// 任务请求编号，通过这个编号可以查到这次调用的详细信息。  </span><span class="pln">
+    </span><span class="com">// 当"ret"为"FAIL"时,包含如下参数: </span><span class="pln">
+    </span><span class="str">"error_code"</span><span class="pun">:</span><span class="pln">xx     </span><span class="com">// 错误代码编号，可以在错误代码列表中查询详细错误原因</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+</span></code></pre>
+
+
+
+<h4 id="代码示例-2"><i class="icon-hdd"></i> 代码示例</h4>
+
+
+
+<h5 id="java示例-2">Java示例</h5>
+
+
+
+<pre class="prettyprint prettyprinted" style=""><code><span class="kwd">import</span><span class="pln"> org</span><span class="pun">.</span><span class="pln">apache</span><span class="pun">.</span><span class="pln">commons</span><span class="pun">.</span><span class="pln">codec</span><span class="pun">.</span><span class="pln">digest</span><span class="pun">.</span><span class="typ">DigestUtils</span><span class="pun">;</span><span class="pln"> 
+</span><span class="kwd">class</span><span class="pln"> md </span><span class="pun">{</span><span class="pln"> 
+    </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> main</span><span class="pun">(</span><span class="typ">String</span><span class="pln"> args</span><span class="pun">[])</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> 
+        </span><span class="typ">String</span><span class="pln"> appkey </span><span class="pun">=</span><span class="pln"> </span><span class="str">"50e26c315270156df0000031"</span><span class="pun">;</span><span class="pln"> 
+        </span><span class="typ">String</span><span class="pln"> appMasterSecret </span><span class="pun">=</span><span class="pln"> </span><span class="str">"b3a09842d2c86177aa8268ee64f14f7e"</span><span class="pun">;</span><span class="pln"> 
+        </span><span class="typ">String</span><span class="pln"> timestamp </span><span class="pun">=</span><span class="pln"> </span><span class="str">"1385321933302"</span><span class="pun">;</span><span class="pln"> 
+        </span><span class="com">// do remember lowercase appkey &amp; app_master_secret </span><span class="pln">
+        </span><span class="typ">String</span><span class="pln"> validationToken </span><span class="pun">=</span><span class="pln"> </span><span class="typ">DigestUtils</span><span class="pun">.</span><span class="pln">md5Hex</span><span class="pun">(</span><span class="pln">appkey</span><span class="pun">.</span><span class="pln">toLowerCase </span><span class="pun">+</span><span class="pln"> appMasterSecret</span><span class="pun">.</span><span class="pln">toLowerCase </span><span class="pun">+</span><span class="pln"> timestamp</span><span class="pun">);</span><span class="pln"> 
+    </span><span class="pun">}</span><span class="pln"> 
+</span><span class="pun">}</span></code></pre>
+
+<blockquote>
+  <p><strong>Note:</strong> DigestUtils.class 在 <em>*</em>.jar 包中，建议版本号：1.8+</p>
+</blockquote>
+
+<hr>
+
+
+
+<h2 id="附录说明">附录说明</h2>
+
+
+
+<h3 id="http接口请求调用错误码">HTTP接口请求调用错误码</h3>
+
+<p>API通过HTTP Status Code来说明请求是否成功, 200表示成功, 500表示失败。</p>
+
+<table>
+<thead>
+<tr>
+  <th>状态码</th>
+  <th>英文描述</th>
+  <th>中文描述</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>200</td>
+  <td>OK</td>
+  <td>请求成功</td>
+</tr>
+<tr>
+  <td>201</td>
+  <td>CREATED</td>
+  <td>创建成功</td>
+</tr>
+<tr>
+  <td>202</td>
+  <td>ACCEPTED</td>
+  <td>更新成功</td>
+</tr>
+<tr>
+  <td>400</td>
+  <td>BAD REQUEST</td>
+  <td>请求的地址不存在或者包含不支持的参数</td>
+</tr>
+<tr>
+  <td>401</td>
+  <td>UNAUTHORIZED</td>
+  <td>未授权</td>
+</tr>
+<tr>
+  <td>403</td>
+  <td>FORBIDDEN</td>
+  <td>被禁止访问</td>
+</tr>
+<tr>
+  <td>404</td>
+  <td>NOT FOUND</td>
+  <td>请求的资源不存在</td>
+</tr>
+<tr>
+  <td>500</td>
+  <td>INTERNAL SERVER ERROR</td>
+  <td>内部错误</td>
+</tr>
+</tbody></table>
+
+
+
+
+<h3 id="api-接口返回错误码">API 接口返回错误码</h3>
+
+<table>
+<thead>
+<tr>
+  <th>状态码</th>
+  <th>错误原因</th>
+  <th>HTTP 状态</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>2001</td>
+  <td>请求参数没有appkey</td>
+  <td>500</td>
+</tr>
+</tbody></table></div></body>
+</html>
